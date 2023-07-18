@@ -41,6 +41,7 @@ export default class QRSVG {
   _options: RequiredOptions;
   _qr?: QRCode;
   _image?: HTMLImageElement;
+  _classPrefix: string;
 
   //TODO don't pass all options to this class
   constructor(options: RequiredOptions) {
@@ -50,7 +51,7 @@ export default class QRSVG {
     this._element.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
     this._defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
     this._style = document.createElementNS("http://www.w3.org/2000/svg", "style");
-
+    this._classPrefix = this.generateClassPrefix();
     this._options = options;
   }
 
@@ -74,6 +75,10 @@ export default class QRSVG {
     this._style = document.createElementNS("http://www.w3.org/2000/svg", "style");
     this._element.appendChild(this._style);
     this._element.appendChild(this._defs);
+  }
+
+  generateClassPrefix(): string {
+    return Array.from({ length: 8 }, () => Math.floor(Math.random() * 25 + 10).toString(36)).join("");
   }
 
   async drawQR(qr: QRCode): Promise<void> {
@@ -157,12 +162,12 @@ export default class QRSVG {
           y: 0,
           height: options.height,
           width: options.width,
-          name: "background-color"
+          name: `${this._classPrefix}-background-color`
         });
       } else if (options.backgroundOptions?.color) {
         this._createStyle({
           color: color,
-          name: "background-color"
+          name: `${this._classPrefix}-background-color`
         });
       }
     }
@@ -198,15 +203,15 @@ export default class QRSVG {
         y: yBeginning,
         height: count * dotSize,
         width: count * dotSize,
-        name: "dot-color"
+        name: `${this._classPrefix}-dot-color`
       });
     } else if (options.dotsOptions.color) {
       this._dots = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      this._dots.setAttribute("class", "dot-color");
+      this._dots.setAttribute("class", `${this._classPrefix}-dot-color`);
       this._element.appendChild(this._dots);
       this._createStyle({
         color: options.dotsOptions.color,
-        name: "dot-color"
+        name: `${this._classPrefix}-dot-color`
       });
     }
 
@@ -287,15 +292,15 @@ export default class QRSVG {
           y,
           height: cornersSquareSize,
           width: cornersSquareSize,
-          name: `corners-square-color-${column}-${row}`
+          name: `${this._classPrefix}-corners-square-color-${column}-${row}`
         });
       } else {
         this._cornerSquares = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        this._cornerSquares.setAttribute("class", `corners-square-color-${column}-${row}`);
+        this._cornerSquares.setAttribute("class", `${this._classPrefix}-corners-square-color-${column}-${row}`);
         this._element.appendChild(this._cornerSquares);
         this._createStyle({
           color: options.cornersSquareOptions?.color,
-          name: `corners-square-color-${column}-${row}`
+          name: `${this._classPrefix}-corners-square-color-${column}-${row}`
         });
       }
 
@@ -348,15 +353,15 @@ export default class QRSVG {
           y: y + dotSize * 2,
           height: cornersDotSize,
           width: cornersDotSize,
-          name: `corners-dot-color-${column}-${row}`
+          name: `${this._classPrefix}-corners-dot-color-${column}-${row}`
         });
       } else {
         this._cornerDots = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        this._cornerDots.setAttribute("class", `corners-dot-color-${column}-${row}`);
+        this._cornerDots.setAttribute("class", `${this._classPrefix}-corners-dot-color-${column}-${row}`);
         this._element.appendChild(this._cornerDots);
         this._createStyle({
           color: options.cornersDotOptions?.color,
-          name: `corners-dot-color-${column}-${row}`
+          name: `${this._classPrefix}-corners-dot-color-${column}-${row}`
         });
       }
 
