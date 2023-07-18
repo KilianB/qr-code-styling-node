@@ -17,6 +17,8 @@
     <div id="container"></div>
     <hr />
     <div id="container2"></div>
+    <hr />
+    <div id="container3"></div>
 
     <script type="text/javascript">
       //Test out dot options
@@ -30,6 +32,10 @@
           color: "#123ddd"
         },
         cornersSquareOptions: {
+          type: "square",
+          color: "#321ccc"
+        },
+        cornersDotOptions: {
           type: "square",
           color: "#321ccc"
         },
@@ -72,6 +78,20 @@
 
         const qrCode = new QRCodeStyling(options);
         qrCode.append(container2);
+      });
+
+      // Draw SVG
+      const container3 = document.getElementById("container3");
+
+      dotOptions.forEach((dotOption, i) => {
+        options["dotsOptions"] = {
+          type: dotOptions[i],
+          color: color[i]
+        };
+        options.type = "svg";
+
+        const qrCode = new QRCodeStyling(options);
+        qrCode.append(container3);
       });
     </script>
   </body>
